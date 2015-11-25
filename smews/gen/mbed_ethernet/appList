@@ -1,0 +1,14 @@
+/pendu/index.html -> apps/pendu/index.html
+/pendu/print_str.h -> apps/pendu/print_str.h
+/pendu/robots.txt -> apps/pendu/robots.txt
+/pendu/macro_char.h -> apps/pendu/macro_char.h
+/pendu/main.c -> apps/pendu/main.c
+/httpCodes/505.html -> apps/httpCodes/505.html
+/pendu/print_str.c -> apps/pendu/print_str.c
+/pendu/nhd_spi_lcd.h -> apps/pendu/nhd_spi_lcd.h
+/pendu/nhd_spi_lcd.c -> apps/pendu/nhd_spi_lcd.c
+/pendu/assets/js/pendu.js -> apps/pendu/assets/js/pendu.js
+/pendu/assets/css/custom.css -> apps/pendu/assets/css/custom.css
+/httpCodes/404.html -> apps/httpCodes/404.html
+/pendu/humans.txt -> apps/pendu/humans.txt
+/pendu/assets/js/jquery.min.js -> apps/pendu/assets/js/jquery.min.js
