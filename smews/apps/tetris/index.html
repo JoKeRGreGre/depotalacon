@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>HTML5 Tetris</title>
+        <link rel='stylesheet' href='style.css' />
+    </head>
+    <body style="margin:auto; width:80%;">
+        <audio id="clearsound" src="sound/pop.ogg" preload="auto"></audio>
+        <canvas width='300' height='600'></canvas>
+        <script src='js/tetris.js'></script>
+        <script src='js/controller.js'></script>
+        <script src='js/render.js'></script>
+
+		<table id="joystick-table">
+			<tr>
+				<td><div id="haut-gauche" ></div></td>
+				<td><div id="haut" ></div></td>
+				<td><div id="haut-droite" ></div></td>
+			</tr>
+			<tr>
+				<td><div id="gauche" ></div></td>
+				<td><div id="centre" class="selected"></div></td>
+				<td><div id="droite" ></div></td>
+			</tr>
+			<tr>
+				<td><div id="bas-gauche" ></div></td>
+				<td><div id="bas" ></div></td>
+				<td><div id="bas-droite" ></div></td>
+			</tr>
+		</table>
+	<div id="message"></div>
+    </body>
+</html>
