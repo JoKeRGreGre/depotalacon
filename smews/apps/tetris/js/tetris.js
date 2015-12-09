@@ -179,32 +179,22 @@ function valid( offsetX, offsetY, newCurrent ) {
 
 function ajaxCallback(status,joystick){
 	if(status == 200 && joystick != "") {
-		
-		if(joystick == 0){
-			document.getElementById('centre').className = "selected";
-		}
-		else if(joystick == 2){
-			document.getElementById('bas').className = "selected";
-			keyPress(40);
+
+		if(joystick == 2){
+			keyPress('down');
 		}
 		else if(joystick == 4){
-			document.getElementById('gauche').className = "selected";
-			keyPress(37);
+			keyPress('left');
 		}
 		else if(joystick == 6){
-			document.getElementById('droite').className = "selected";
-			keyPress(39);
+			keyPress('right');
 		}
 		else if(joystick == 8){
-			document.getElementById('haut').className = "selected";
-			keyPress(38);
+			keyPress('rotate');
 		}
-		else if(joystick == 5){
-			document.getElementById('centre').className = "center-selected";
-		}
-		console.log(joystick);
-		doAjax(ajaxTarget+"?joystick="+joystick,ajaxCallback,0,0);
+			
 	}
+	doAjax(ajaxTarget,ajaxCallback,0,0);
 }
 
 function doAjax(ajaxTarget,ajaxCallBack,timeout,timeoutCallBack){
@@ -225,26 +215,6 @@ function doAjax(ajaxTarget,ajaxCallBack,timeout,timeoutCallBack){
 	xhr.send(null);
 }
 
-function ajaxGet(url) {
-	var xhr;
-	try{ xhr = new XMLHttpRequest(); }
-	catch(e){ xhr = new ActiveXObject('Microsoft.XMLHTTP'); }
-
-	xhr.onreadystatechange = function(){
-		if(xhr.readyState  == 4){
-			if(ajaxRet=xhr.status==200)
-				ajaxCallback(xhr.responseText);
-		}
-	};
-	xhr.open("GET", url, true);
-	xhr.send(null);
-}
-
-
-
-
-
-
 
 
 
@@ -254,8 +224,8 @@ function newGame() {
     newShape();
     lose = false;
     interval = setInterval( tick, 250 );
-	joystick=-1;
-	doAjax(ajaxTarget+"?joystick="+joystick,ajaxCallback,0,0);
+	joystick=0;
+	doAjax(ajaxTarget,ajaxCallback,0,0);
 }
 
 newGame();

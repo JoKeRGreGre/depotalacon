@@ -1,87 +1,106 @@
-/* This file is part of rflpc. Copyright 2010-2011 Michael Hauspie
- *
- * rflpc is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * rflpc is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with rflpc.  If not, see <http://www.gnu.org/licenses/>.
- */
 /*
-  Author: Michael Hauspie <michael.hauspie@univ-lille1.fr>
-  Created:
-  Time-stamp: <2014-05-30 09:55:41 (mickey)>
+* This file has been enriched by GenApps, a tool of the smews project
+* smews home page: http://www.lifl.fr/2XS/smews
+* Generation date: Wed Dec  9 14:49:14 2015
 */
+
+#include "generators.h"
+#include "stddef.h"
+
+#include "defines.h"
+
+#ifndef DISABLE_POST
+/********* Content-types array **********/
+static CONST_VAR(unsigned char, mimes_index[]) = {4};
+
+#endif
+#ifndef DISABLE_ARGS
+/********** Arguments structure **********/
+struct args_t {
+	char nom[150];
+};
+
+/********** Arguments index **********/
+static CONST_VAR(struct arg_ref_t, args_index[]) = {
+	{arg_type: arg_str, arg_size: sizeof(char[150]), arg_offset: offsetof(struct args_t,nom)},
+};
+
+/********** Symbols list, total length: 3 bytes **********/
+/*
+* nom
+*/
+
+/********** Generated Ternary Tree **********/
+/*
+* -nom|END
+*/
+
+/********** "Understoodable" Generated BLOB, total length: 5 bytes **********/
+/*
+* "nom",ref:0,0
+*/
+
+/********** Finally Generated BLOB, total length: 5 bytes **********/
+static CONST_VAR(unsigned char, args_tree[]) = {110,111,109,128,0};
+#endif
+
+/********** Output handler **********/
+static generator_init_func_t null_action;
+static generator_doget_func_t lcd_f;
+CONST_VAR(struct output_handler_t, apps_test_lcd_test) = {
+	.handler_type = type_generator,
+	.handler_comet = 0,
+	.handler_stream = 0,
+	.handler_data = {
+		.generator = {
+			.prop = prop_persistent,
+			.init = null_action,
+			.handlers = {
+				.get = {
+				.doget = lcd_f,
+				},
+			},
+		},
+	},
+#ifndef DISABLE_ARGS
+	.handler_args = {
+		.args_tree = args_tree,
+		.args_index = args_index,
+		.args_size = sizeof(struct args_t)
+	},
+#endif
+#ifndef DISABLE_POST
+	.handler_mimes = {
+		.mimes_index = mimes_index,
+		.mimes_size = 1,
+	},
+#endif
+};
+
+/* End of the enriched part */
+
 #include <rflpc17xx/rflpc17xx.h>
-#include <nhd_spi_lcd.h>
+#include "print_str.h"
 
 
-#define WIDTH 128
-#define HEIGHT 32
-
-#define BUFFER_SIZE (WIDTH * (HEIGHT >> 3))
+/*
+  <generator>
+    <handlers init="null_action" doPost="lcd_f"/>
+    <args>
+      <arg name="nom" type="str" size="150" />
+    </args>
+  </generator>
+*/
 
 uint8_t buffer[BUFFER_SIZE];
 
-#define COORD_TO_BYTE(x,y) ((((y)>>3) * WIDTH) + (x))
-#define COORD_TO_BIT(x,y) (((y) & 7))
-
-void set_pixel(uint8_t x, uint8_t y)
-{
-   int byte_idx = COORD_TO_BYTE(x,y);
-   buffer[byte_idx] |= (1 << COORD_TO_BIT(x,y));
-}
-void clr_pixel(uint8_t x, uint8_t y)
-{
-   int byte_idx = COORD_TO_BYTE(x,y);
-   buffer[byte_idx] &= ~(1 << COORD_TO_BIT(x,y));
+static char lcd_f(struct args_t *args){
+	init_lcd();
+	clr_lcd();
+	print_string(args->nom);
+	return 1;
 }
 
-void clr_buffer(void)
-{
-   memset(buffer, 0, BUFFER_SIZE);
-}
+static char null_action(){return 1;}
 
-int main()
-{
-#ifdef RFLPC_CONFIG_ENABLE_UART
-    rflpc_uart_init(RFLPC_UART0);
-#endif
-
-#ifdef RFLPC_CONFIG_ENABLE_PRINTF
-    printf("Hello World\r\n");
-#endif
-    
-    printf("Start LCD Initialization\r\n");
-
-    nhd_spi_lcd_init(NHD_MAKE_SIZE(WIDTH,HEIGHT), MBED_DIP6, MBED_DIP8, MBED_DIP11, RFLPC_SPI1);
-    clr_buffer();
-    printf("LCD Initialized\r\n");
-
-    {
-       int x,y,toggle = 0;
-       for (y = 0 ; y < HEIGHT ; ++y)
-       {
-          toggle = !toggle;
-          for (x = 0 ; x < WIDTH ; ++x)
-          {
-             if ((x%32) == y)
-                set_pixel(x,y);
-             else
-                clr_pixel(x,y);
-             toggle = !toggle;
-          }
-       }
-    }
-    nhd_spi_lcd_display_buffer(buffer);
-
-    while (1)
-       rflpc_idle;
-    return 0;
-}
+static char null_action1(){return 1;}

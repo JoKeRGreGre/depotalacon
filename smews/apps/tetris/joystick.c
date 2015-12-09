@@ -39,7 +39,6 @@ static void timer() {
 	}
 	if(joystick != oldjoystick){
 		glob_load = (uint16_t)joystick;
-		rflpc_led_set(RFLPC_LED_1);
 		server_push(&joystickChannel);
 	}
 }
@@ -50,7 +49,6 @@ static char init(void) {
 	rflpc_pin_set(MBED_DIP14, 0, RFLPC_PIN_MODE_RESISTOR_PULL_DOWN, 0);
 	rflpc_pin_set(MBED_DIP15, 0, RFLPC_PIN_MODE_RESISTOR_PULL_DOWN, 0);
 	rflpc_pin_set(MBED_DIP16, 0, RFLPC_PIN_MODE_RESISTOR_PULL_DOWN, 0);
-	rflpc_led_init();
 	return set_timer(&timer,100);
 }
 
